@@ -120,6 +120,7 @@ footer{padding:26px 0 48px;color:var(--dim);font-size:12px;border-top:1px solid 
 footer .in{display:grid;gap:8px}
 footer b{color:var(--ink);font-weight:600}
 @media (max-width:900px){.spec,.slice,.l2{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}.stats,.cascade{grid-template-columns:1fr 1fr}.dossier{grid-template-columns:1fr}.ep{grid-template-columns:1fr}.top nav{display:none}.label{grid-template-columns:1fr}.bar{display:none}.spec canvas{height:380px}.slice canvas{height:320px}}
+@media (max-width:600px){.strain{display:none}.logo span{display:none}.top .btn.mint{padding:0 10px;font-size:0;gap:0}.top .btn.mint img{width:16px;height:16px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -258,7 +259,7 @@ footer b{color:var(--ink);font-weight:600}
   regs.innerHTML = REG.map(function (r, i) { return '<button class="reg" data-i="' + i + '"><i style="background:' + r.color + '"></i>' + r.name + '<small>' + r.note + '</small></button>'; }).join('');
   regs.addEventListener('click', function (e) { var b = e.target.closest('.reg'); if (!b) return; var i = +b.dataset.i; active = active === i ? -1 : i; regs.querySelectorAll('.reg').forEach(function (x, k) { x.classList.toggle('on', k === active); }); dirty = true; });
 
-  var cv = document.getElementById('brain'), g = cv.getContext('2d'), rotY = .6, rotX = -.25, drag = null, dirty = true, auto = true;
+  var cv = document.getElementById('brain'), g = cv.getContext('2d'), rotY = .12, rotX = -.35, drag = null, dirty = true, auto = true;
   var RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
   function size() { var r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1); cv.width = r.width * dpr; cv.height = r.height * dpr; dirty = true; }
   size(); addEventListener('resize', size);
@@ -274,7 +275,7 @@ footer b{color:var(--ink);font-weight:600}
     for (var k = 0; k < proj.length; k++) { var q = proj[k], depth = (q[2] + 2.2) / 4.4, on = active < 0 || q[3] === active; g.globalAlpha = on ? .25 + depth * .6 : .06; g.fillStyle = REG[q[3]].color; var s = (on ? 1.1 : .8) * (0.6 + depth) * (W / 900); g.fillRect(ox + q[0] * sc - s / 2, oy + q[1] * sc - s / 2, s, s); }
     g.globalAlpha = 1;
   }
-  function loop() { if (auto && !RM) { rotY += .0025; dirty = true; } if (dirty) { dirty = false; draw(); } requestAnimationFrame(loop); }
+  function loop() { if (auto && !RM) { rotY = .12 + Math.sin(performance.now() / 4000) * .55; dirty = true; } if (dirty) { dirty = false; draw(); } requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
 
   /* ------------------------------------------------------------ slice inspector: a cross-section of the same model */
